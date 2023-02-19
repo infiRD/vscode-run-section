@@ -30,6 +30,10 @@
       {
         "command": "run-section.runSelection",
         "title": "run-section: Run Selection in Active Terminal"
+      },
+      {
+        "command": "run-section.runSelectionShowTerminal",
+        "title": "run-section: Run Selection in Active Terminal, Show Terminal"
       }
     ],
     "keybindings": [

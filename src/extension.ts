@@ -49,6 +49,53 @@ function err(msg: string): void {
 	out(msg);
 }
 
+function run_text_in_terminal(text: string, showTerminal: boolean = false): void {
+	// get current terminal or create new one
+	let terminal = vscode.window.activeTerminal;
+	if (!terminal) {
+		log('No interactive terminal available');
+		vscode.window.showErrorMessage('Create at least one terminal first');
+		return;
+	}
+	log('Running selection in terminal: ' + terminal.name);
+
+	if (showTerminal) {
+		terminal.show();
+	}
+	terminal.sendText(text);
+
+	if (showTerminal) {
+		// try to move focus from terminal back to editor
+		// - there is some bug in VSCode as of 2/2023 that causes the focus to move to terminal
+		let timeout = 200;
+		setTimeout(() => {
+			let msg = `Focusing editor after ${timeout} ms`;
+			log(msg);
+			// vscode.window.showInformationMessage(msg);
+			vscode.commands.executeCommand('workbench.action.focusActiveEditorGroup');
+		}, timeout);
+	}
+}
+
+function get_text_to_run(): string | void {
+	// get text on current line
+	let editor = vscode.window.activeTextEditor;
+	if (!editor) {
+		return;
+	} else {
+		var selection = editor.selection;
+		var text = editor.document.getText(selection);
+		if (text.length === 0) {
+			// get current line and strip leading and trailing whitespace
+			let line = editor.document.lineAt(selection.active.line);
+			text = line.text.trim();
+		}
+		out(text);
+	}
+	log('Obtained text: ' + text);
+	return text;
+}
+
 // ======================================== //
 //                    Main                  //
 // ======================================== //
@@ -77,46 +124,19 @@ export function activate(context: vscode.ExtensionContext) {
 	// Will run selected text or current line if no text is selected
 	let cmd_runSelection = vscode.commands.registerCommand(`${EXT_ID}.runSelection`, () => {
 		log('runSelection command invoked');
-
-		// get text on current line
-		let editor = vscode.window.activeTextEditor;
-		if (!editor) {
-			return;
-		} else {
-			var selection = editor.selection;
-			var text = editor.document.getText(selection);
-			if (text.length === 0) {
-				// get current line and strip leading and trailing whitespace
-				let line = editor.document.lineAt(selection.active.line);
-				text = line.text.trim();
-			}
-			out(text);
-		}
-		log('Obtained text: ' + text);
-
-		// get current terminal or create new one
-		let terminal = vscode.window.activeTerminal;
-		if (!terminal) {
-			log('No interactive terminal available');
-			vscode.window.showErrorMessage('Create at least one terminal first');
-			return;
-		}
-		log('Running selection in terminal: ' + terminal.name);
-
-		terminal.show();
-		terminal.sendText(text);
-
-		// move focus from terminal back to editor
-		let timeout = 200;
-		setTimeout(() => {
-			let msg = `Focusing editor after ${timeout} ms`;
-			log(msg);
-			// vscode.window.showInformationMessage(msg);
-			vscode.commands.executeCommand('workbench.action.focusActiveEditorGroup');
-		}, timeout);
+		let text = get_text_to_run()!;
+		run_text_in_terminal(text);
 	});
 
-	for (let cmd of [cmd_sayHello, cmd_showOutputWindow, cmd_showTime, cmd_runSelection]) {
+	// Will run selected text or current line if no text is selected + show terminal
+	let cmd_runSelectionShowTerminal = vscode.commands.registerCommand(`${EXT_ID}.runSelectionShowTerminal`, () => {
+		log('runSelectionShowTerminal command invoked');
+		let text = get_text_to_run()!;
+		run_text_in_terminal(text, true);
+	});
+
+
+	for (let cmd of [cmd_sayHello, cmd_showOutputWindow, cmd_showTime, cmd_runSelection, cmd_runSelectionShowTerminal]) {
 		context.subscriptions.push(cmd);
 	}
 }
