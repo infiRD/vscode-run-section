@@ -1,6 +1,6 @@
 {
   "name": "run-section",
-  "displayName": "Execute Section in REPL",
+  "displayName": "Execute Section in active terminal (REPL)",
   "description": "Locate section markers and run the code between them + some useful stuff",
   "version": "0.0.1",
   "engines": {
@@ -10,14 +10,28 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:run-section.helloWorld"
+    "onStartupFinished"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "run-section.helloWorld",
-        "title": "Hello World"
+        "command": "run-section.sayHello",
+        "title": "run-section: Say Hello !"
+      },
+      {
+        "command": "run-section.showOutputWindow",
+        "title": "run-section: Show Output Window"
+      },
+      {
+        "command": "run-section.showTime",
+        "title": "run-section: What's the time ?"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "run-section.showTime",
+        "key": "ctrl+alt+t"
       }
     ]
   },

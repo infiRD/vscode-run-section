@@ -1,26 +1,65 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
+/* ========================================================================= //
+ run-section VSCode extension implementation
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
+ Author:  Martin Zamba
+ Since:   February 2023
+ License: MIT License
+============================================================================ */
+
+/*
+REFERENCES
+----------
+[1] visualstudio: Extension API
+	https://code.visualstudio.com/api
+	
+*/
+
+// Imports
+import * as vscode from 'vscode';              // VS Code extensibility API
+
+
+// ======================================== //
+//                 Functions                //
+// ======================================== //
+function log(msg: string) {
+	console.log(msg);
+}
+
+function err(msg: string) {
+	console.error(msg);
+}
+
+
+// ======================================== //
+//                    Main                  //
+// ======================================== //
+// Called when your extension is activated 
 export function activate(context: vscode.ExtensionContext) {
+	log('run-section extension active');
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "run-section" is now active!');
+	let out = vscode.window.createOutputChannel("hello");
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('run-section.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from Run Section!');
+	out.appendLine("hello-world extension activated");
+
+	// Will say hello to you
+	let cmdSayHello = vscode.commands.registerCommand('run-section.sayHello', () => {
+		vscode.window.showInformationMessage('Hello !!! World from Run Section!');
 	});
 
-	context.subscriptions.push(disposable);
+	// Show extension's output window
+	let cmdShowOutputWin = vscode.commands.registerCommand('run-section.showOutputWindow', () => {
+		out.show();
+	});
+
+	// Will show current time
+	let cmdWhatIsTheTime = vscode.commands.registerCommand('run-section.showTime', () => {
+		vscode.window.showWarningMessage('The time is ' + new Date().toLocaleTimeString());
+	});
+
+	for (let cmd of [cmdSayHello, cmdShowOutputWin, cmdWhatIsTheTime]) {
+		context.subscriptions.push(cmd);
+	}
 }
 
 // This method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() { }
