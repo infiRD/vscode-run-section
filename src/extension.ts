@@ -103,7 +103,17 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 		log('Running selection in terminal: ' + terminal.name);
 
+		terminal.show();
 		terminal.sendText(text);
+
+		// move focus from terminal back to editor
+		let timeout = 200;
+		setTimeout(() => {
+			let msg = `Focusing editor after ${timeout} ms`;
+			log(msg);
+			// vscode.window.showInformationMessage(msg);
+			vscode.commands.executeCommand('workbench.action.focusActiveEditorGroup');
+		}, timeout);
 	});
 
 	for (let cmd of [cmd_sayHello, cmd_showOutputWindow, cmd_showTime, cmd_runSelection]) {
