@@ -14,9 +14,12 @@ REFERENCES
 	
 */
 
-// Imports
+// Imports, globals
 import * as vscode from 'vscode';              // VS Code extensibility API
 
+declare global {
+	var outputWindow: vscode.OutputChannel;
+}
 
 // ======================================== //
 //                 Functions                //
@@ -29,6 +32,10 @@ function err(msg: string) {
 	console.error(msg);
 }
 
+function out(msg: string) {
+	global.outputWindow.appendLine(msg);
+}
+
 
 // ======================================== //
 //                    Main                  //
@@ -37,26 +44,26 @@ function err(msg: string) {
 export function activate(context: vscode.ExtensionContext) {
 	log('run-section extension active');
 
-	let out = vscode.window.createOutputChannel("hello");
+	global.outputWindow = vscode.window.createOutputChannel("hello");
 
-	out.appendLine("hello-world extension activated");
+	out("run-section extension activated");
 
 	// Will say hello to you
-	let cmdSayHello = vscode.commands.registerCommand('run-section.sayHello', () => {
+	let cmd_sayHello = vscode.commands.registerCommand('run-section.sayHello', () => {
 		vscode.window.showInformationMessage('Hello !!! World from Run Section!');
 	});
 
 	// Show extension's output window
-	let cmdShowOutputWin = vscode.commands.registerCommand('run-section.showOutputWindow', () => {
-		out.show();
+	let cmd_showOutputWindow = vscode.commands.registerCommand('run-section.showOutputWindow', () => {
+		global.outputWindow.show();
 	});
 
 	// Will show current time
-	let cmdWhatIsTheTime = vscode.commands.registerCommand('run-section.showTime', () => {
+	let cmd_showTime = vscode.commands.registerCommand('run-section.showTime', () => {
 		vscode.window.showWarningMessage('The time is ' + new Date().toLocaleTimeString());
 	});
 
-	for (let cmd of [cmdSayHello, cmdShowOutputWin, cmdWhatIsTheTime]) {
+	for (let cmd of [cmd_sayHello, cmd_showOutputWindow, cmd_showTime]) {
 		context.subscriptions.push(cmd);
 	}
 }
