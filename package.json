@@ -26,6 +26,10 @@
       {
         "command": "run-section.showTime",
         "title": "run-section: What's the time ?"
+      },
+      {
+        "command": "run-section.runSelection",
+        "title": "run-section: Run Selection in Active Terminal"
       }
     ],
     "keybindings": [
