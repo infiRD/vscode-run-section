@@ -28,6 +28,10 @@
         "title": "run-section: What's the time ?"
       },
       {
+        "command": "run-section.showTerminal",
+        "title": "run-section: Show Active Terminal"
+      },
+      {
         "command": "run-section.runSelection",
         "title": "run-section: Run Selection in Active Terminal"
       },

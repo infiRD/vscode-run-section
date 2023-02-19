@@ -49,31 +49,50 @@ function err(msg: string): void {
 	out(msg);
 }
 
-function run_text_in_terminal(text: string, showTerminal: boolean = false): void {
-	// get current terminal or create new one
+function get_active_terminal(): vscode.Terminal | undefined {
 	let terminal = vscode.window.activeTerminal;
 	if (!terminal) {
 		log('No interactive terminal available');
 		vscode.window.showErrorMessage('Create at least one terminal first');
 		return;
 	}
-	log('Running selection in terminal: ' + terminal.name);
+	return terminal;
+}
 
+function refocus_editor(): void {
+	// try to move focus from terminal back to editor
+	// - there is some bug in VSCode as of 2/2023 that causes the focus to move to terminal
+	let timeout = 200;
+	setTimeout(() => {
+		let msg = `Focusing editor after ${timeout} ms`;
+		log(msg);
+		vscode.window.showInformationMessage(msg);
+		vscode.commands.executeCommand('workbench.action.focusActiveEditorGroup');
+	}, timeout);
+}
+
+function show_active_terminal(): void {
+	let terminal = get_active_terminal();
+	if (!terminal) {
+		return;
+	}
+	terminal.show();
+}
+
+function run_text_in_terminal(text: string, showTerminal: boolean = false): void {
+	let terminal = get_active_terminal();
+	if (!terminal) {
+		return;
+	}
 	if (showTerminal) {
 		terminal.show();
 	}
+
+	log('Running selection in terminal: ' + terminal.name);
 	terminal.sendText(text);
 
 	if (showTerminal) {
-		// try to move focus from terminal back to editor
-		// - there is some bug in VSCode as of 2/2023 that causes the focus to move to terminal
-		let timeout = 200;
-		setTimeout(() => {
-			let msg = `Focusing editor after ${timeout} ms`;
-			log(msg);
-			// vscode.window.showInformationMessage(msg);
-			vscode.commands.executeCommand('workbench.action.focusActiveEditorGroup');
-		}, timeout);
+		refocus_editor();
 	}
 }
 
@@ -90,7 +109,6 @@ function get_text_to_run(): string | void {
 			let line = editor.document.lineAt(selection.active.line);
 			text = line.text.trim();
 		}
-		out(text);
 	}
 	log('Obtained text: ' + text);
 	return text;
@@ -135,8 +153,14 @@ export function activate(context: vscode.ExtensionContext) {
 		run_text_in_terminal(text, true);
 	});
 
+	// Will run selected text or current line if no text is selected + show terminal
+	let cmd_showTerminal = vscode.commands.registerCommand(`${EXT_ID}.showTerminal`, () => {
+		log('showTerminal command invoked');
+		show_active_terminal();
+	});
 
-	for (let cmd of [cmd_sayHello, cmd_showOutputWindow, cmd_showTime, cmd_runSelection, cmd_runSelectionShowTerminal]) {
+
+	for (let cmd of [cmd_sayHello, cmd_showOutputWindow, cmd_showTime, cmd_runSelection, cmd_runSelectionShowTerminal, cmd_showTerminal]) {
 		context.subscriptions.push(cmd);
 	}
 }
