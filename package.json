@@ -16,16 +16,8 @@
   "contributes": {
     "commands": [
       {
-        "command": "run-section.sayHello",
-        "title": "run-section: Say Hello !"
-      },
-      {
         "command": "run-section.showOutputWindow",
         "title": "run-section: Show Output Window"
-      },
-      {
-        "command": "run-section.showTime",
-        "title": "run-section: What's the time ?"
       },
       {
         "command": "run-section.showTerminal",
@@ -39,13 +31,8 @@
         "command": "run-section.runSelectionShowTerminal",
         "title": "run-section: Run Selection in Active Terminal and show it (glitchy)"
       }
-    ],
-    "keybindings": [
-      {
-        "command": "run-section.showTime",
-        "key": "ctrl+alt+t"
-      }
     ]
+
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

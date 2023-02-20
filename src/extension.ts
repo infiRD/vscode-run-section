@@ -14,7 +14,7 @@ REFERENCES
 	
 */
 
-// Imports, globals
+// Imports, globals, constants
 import * as vscode from 'vscode';              // VS Code extensibility API
 
 declare global {
@@ -122,24 +122,6 @@ function get_text_to_run(): string | void {
 export function activate(context: vscode.ExtensionContext) {
 	out("extension activated");
 
-	// Will say hello to you
-	let cmd_sayHello = vscode.commands.registerCommand(`${EXT_ID}.sayHello`, () => {
-		log('sayHello command invoked');
-		vscode.window.showInformationMessage('Hello !!! World from Run Section!');
-	});
-
-	// Show extension's output window
-	let cmd_showOutputWindow = vscode.commands.registerCommand(`${EXT_ID}.showOutputWindow`, () => {
-		log('showOutputWindow command invoked');
-		global.outputWindow.show();
-	});
-
-	// Will show current time
-	let cmd_showTime = vscode.commands.registerCommand(`${EXT_ID}.showTime`, () => {
-		log('showTime command invoked');
-		vscode.window.showWarningMessage('The time is ' + new Date().toLocaleTimeString());
-	});
-
 	// Will run selected text or current line if no text is selected
 	let cmd_runSelection = vscode.commands.registerCommand(`${EXT_ID}.runSelection`, () => {
 		log('runSelection command invoked');
@@ -157,13 +139,24 @@ export function activate(context: vscode.ExtensionContext) {
 		run_text_in_terminal(text, true);
 	});
 
-	// Will run selected text or current line if no text is selected + show terminal
+	// Will show active terminal
 	let cmd_showTerminal = vscode.commands.registerCommand(`${EXT_ID}.showTerminal`, () => {
 		log('showTerminal command invoked');
 		show_active_terminal();
 	});
 
-	for (let cmd of [cmd_sayHello, cmd_showOutputWindow, cmd_showTime, cmd_runSelection, cmd_runSelectionShowTerminal, cmd_showTerminal]) {
+	// Show extension's output window
+	let cmd_showOutputWindow = vscode.commands.registerCommand(`${EXT_ID}.showOutputWindow`, () => {
+		log('showOutputWindow command invoked');
+		global.outputWindow.show();
+	});
+
+	for (let cmd of [
+		cmd_runSelection,
+		cmd_runSelectionShowTerminal,
+		cmd_showTerminal,
+		cmd_showOutputWindow,
+	]) {
 		context.subscriptions.push(cmd);
 	}
 }
