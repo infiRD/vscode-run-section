@@ -1,7 +1,7 @@
 {
   "name": "run-section",
-  "displayName": "Execute Section in active terminal (REPL)",
-  "description": "Locate section markers and run the code between them + some useful stuff",
+  "displayName": "Execute Section in active terminal",
+  "description": "Locate section markers and execute the code between them in active terminal / REPL + some useful stuff",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.75.0"
