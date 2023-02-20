@@ -37,7 +37,7 @@
       },
       {
         "command": "run-section.runSelectionShowTerminal",
-        "title": "run-section: Run Selection in Active Terminal, Show Terminal"
+        "title": "run-section: Run Selection in Active Terminal and show it (glitchy)"
       }
     ],
     "keybindings": [

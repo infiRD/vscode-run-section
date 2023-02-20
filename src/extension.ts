@@ -61,7 +61,8 @@ function get_active_terminal(): vscode.Terminal | undefined {
 
 function refocus_editor(): void {
 	// try to move focus from terminal back to editor
-	// - there is some bug in VSCode as of 2/2023 that causes the focus to move to terminal
+	// - there is some bug in VSCode as of 2/2023 that causes the focus to move to terminal 
+	//   after calling terminal.show()
 	let timeout = 200;
 	setTimeout(() => {
 		let msg = `Focusing editor after ${timeout} ms`;
@@ -88,7 +89,7 @@ function run_text_in_terminal(text: string, showTerminal: boolean = false): void
 		terminal.show();
 	}
 
-	log('Running selection in terminal: ' + terminal.name);
+	log(`Running selection in terminal (${terminal.name}): ${text}`);
 	terminal.sendText(text);
 
 	if (showTerminal) {
@@ -147,6 +148,9 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	// Will run selected text or current line if no text is selected + show terminal
+	// ! disabled:
+	// - if there is a higher load on the system, the editor will not be refocused on time
+	//   and there is no way to detect when to send the focus back to the editor
 	let cmd_runSelectionShowTerminal = vscode.commands.registerCommand(`${EXT_ID}.runSelectionShowTerminal`, () => {
 		log('runSelectionShowTerminal command invoked');
 		let text = get_text_to_run()!;
@@ -158,7 +162,6 @@ export function activate(context: vscode.ExtensionContext) {
 		log('showTerminal command invoked');
 		show_active_terminal();
 	});
-
 
 	for (let cmd of [cmd_sayHello, cmd_showOutputWindow, cmd_showTime, cmd_runSelection, cmd_runSelectionShowTerminal, cmd_showTerminal]) {
 		context.subscriptions.push(cmd);
