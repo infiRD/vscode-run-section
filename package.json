@@ -31,8 +31,14 @@
         "command": "run-section.runSelectionShowTerminal",
         "title": "run-section: Run Selection in Active Terminal and show it (glitchy)"
       }
+    ],
+    "keybindings": [
+      {
+        "command": "run-section.runSelection",
+        "key": "ctrl+enter",
+        "when": "editorTextFocus"
+      }
     ]
-
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
