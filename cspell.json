@@ -9,9 +9,6 @@
     "allowCompoundWords": true,
     "useGitignore": true,
     // words - list of words to be always considered correct
-    "words": [
-        "vsix"
-    ],
     "dictionaries": [
         "jargon",
         "entities"
