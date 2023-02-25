@@ -5,8 +5,8 @@
   "publisher": "martin-zamba",
   "homepage": "git@github.com:infiRD/vscode-run-section.git",
   "repository": {
-      "type": "git",
-      "url": "git@github.com:infiRD/vscode-run-section.git"
+    "type": "git",
+    "url": "git@github.com:infiRD/vscode-run-section.git"
   },
   "version": "0.0.1",
   "engines": {
@@ -52,7 +52,8 @@
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"
+    "test": "node ./out/test/runTest.js",
+    "package": "vsce package -o ./build"
   },
   "devDependencies": {
     "@types/vscode": "^1.75.0",

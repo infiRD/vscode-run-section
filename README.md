@@ -9,8 +9,8 @@ Locate section markers and execute the code between them in active terminal / RE
 * **Run Selection in Active Terminal** | `run-section.runSelection`
   executes current selection, or current line if nothing is selected in active terminal. This is meant as a replacement for `workbench.action.terminal.runSelectedText` (default in VSCode action when you press `ctrl+enter`) which is buggy as of 2/2023 - current editor looses focus after invocation
   
-* **Run Selection in Active Terminal and show it** | `run-section.runSelectionShowTerminal`
-  follows the logic of `workbench.action.terminal.runSelectedText` in a sense that it also shows the active terminal. Afterwards it tries to refocus the active editor - this is however glitchy - fails if the load of the system is high and there is no available fix (AFAIK)
+* **Run Selection in Active Terminal, show the Terminal** | `run-section.runSelectionShowTerminal`
+  follows the logic of `workbench.action.terminal.runSelectedText` in a sense that on top of previous command also shows the active terminal. Afterwards it tries to refocus the active editor. This is however glitchy and fails if the load of the system is high. Due to limitations of VSCode API there is no workaround (AFAIK)
 
 <!-- \!\[feature X\]\(images/feature-x.png\)
 
