@@ -1,4 +1,4 @@
-# run-section
+# Run Section
 
 Locate section markers and execute the code between them in active terminal / REPL + some useful stuff
 

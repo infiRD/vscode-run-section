@@ -1,8 +1,8 @@
 {
   "name": "run-section",
-  "displayName": "Execute Section in active terminal",
+  "displayName": "Run Section",
   "description": "Locate section markers and execute the code between them in active terminal / REPL + some useful stuff",
-  "publisher": "martin-zamba",
+  "publisher": "martinzamba",
   "homepage": "git@github.com:infiRD/vscode-run-section.git",
   "repository": {
     "type": "git",
