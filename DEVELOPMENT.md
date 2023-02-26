@@ -17,7 +17,7 @@ Deployment
 
 Install to local VSCode installation:
 
-    code --install-extension ./build/my-extension-<version>.vsix
+    code --install-extension ./build/run-section-<version>.vsix
 
 Publishing
 ----------
